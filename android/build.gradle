@@ -1,0 +1,37 @@
+buildscript {
+    ext.kotlin_version = '1.3.50'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://android.pointr.dev/artifactory/gradle-release-local"
+            // For plugins and TileView
+            credentials {
+                username 'jci'
+                password 'AKCp8ihpLWhpPD8BRftgBc5sVfLKxce2LcTLuuztVi3XH6nfv1KavyWg7VELtzrVNxJHToLmJ'
+            }
+        }
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    project.evaluationDependsOn(':app')
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
